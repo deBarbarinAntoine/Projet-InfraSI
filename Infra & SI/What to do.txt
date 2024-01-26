@@ -1,0 +1,33 @@
+Plan d'adressage :
+Internet: Adresse IP publique
+Pare-feu (WAN): Configuration DHCP pour le réseau interne
+Pare-feu (LAN): Adresse IP statique (ex: 192.168.1.1)
+Clients: Dynamique via DHCP ou statique (ex: 192.168.1.2, 192.168.1.3)
+Serveur web (Privé): Adresse IP statique (ex: 192.168.1.4)
+Serveur web (Public): Adresse IP publique
+Serveur de Sauvegarde (Privé): Adresse IP statique (ex: 192.168.1.5)
+Serveur de Sauvegarde (Public): Adresse IP publique
+
+VMs et Interconnexions :
+Pare-feu: Configurez comme un routeur avec un serveur DHCP, DNS et pare-feu activé.
+Clients et Serveurs: Configurer avec des adresses IP statiques ou utiliser le DHCP du pare-feu.
+Utilisez un switch pour connecter les clients et les serveurs.
+Tableau de filtrage :
+Configurez le pare-feu pour autoriser le trafic interne et externe nécessaire (ports 80, 443, etc.).
+Bloquez tout le trafic non nécessaire.
+
+Sauvegarde et Restauration :
+Utilisez des outils de sauvegarde automatique comme rsync, tar, ou des solutions plus avancées comme Bacula, Duplicity.
+Planifiez les sauvegardes quotidiennes.
+
+Documentation pour la Restauration :
+Documentez les procédures de restauration pour chaque composant.
+Incluez des scripts de restauration automatisés si possible.
+
+Site Web :
+Configurez Apache ou Nginx sur le serveur web.
+Créez une page détaillant le projet, les schémas, les documentations, etc.
+
+Certificat SSL :
+Utilisez Let's Encrypt pour des certificats gratuits ou créez un certificat auto-signé.
+Documentez le processus et expliquez-le sur le site web.
