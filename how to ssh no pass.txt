@@ -1,0 +1,21 @@
+Generate SSH Key Pair:
+
+If you don’t already have an SSH key pair, generate one:
+
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+Follow the prompts to save the key (default location is ~/.ssh/id_rsa) and optionally set a passphrase.
+
+Copy Public Key to Remote Server:
+
+ssh-copy-id user@remote-server
+
+This command will prompt for your remote user password and copy your public key to the remote server.
+
+Verify Passwordless SSH:
+
+Test the SSH connection to ensure it no longer requires a password:
+
+ssh user@remote-server
+
+If successful, your script can now connect to the remote server without requiring a password.

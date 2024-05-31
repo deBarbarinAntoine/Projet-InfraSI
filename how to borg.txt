@@ -1,0 +1,92 @@
+Excellent choice! BorgBackup is a powerful tool for creating secure and efficient backups. Here's how to set it up on your Ubuntu 22.04 server for automatic backups with manual restore capabilities:
+
+1. Installation:
+
+Open a terminal session on your Ubuntu server via SSH.
+Update package lists:
+Bash
+sudo apt update
+Utilisez ce code avec précaution.
+content_copy
+Install BorgBackup:
+Bash
+sudo apt install borgbackup borgbackup-doc
+Utilisez ce code avec précaution.
+content_copy
+2. Configure BorgBackup:
+
+Repository: Decide where to store your backups. It's recommended to use a separate storage device or a remote server for added security. Here, we'll assume you're using a remote server accessible via SSH.
+
+Replace username@server_address:/path/to/repository with your actual details:
+Bash
+borg init ssh://username@server_address:/path/to/repository
+Utilisez ce code avec précaution.
+content_copy
+Enter a strong passphrase when prompted. This passphrase is crucial for accessing and decrypting your backups. Store it securely.
+3. Setting Up Automatic Backups:
+
+Create a script to automate backups using borg create. Here's a basic example:
+
+Bash
+#!/bin/bash
+
+# Set backup source and destination
+BACKUP_SOURCE="/home"
+BACKUP_DEST="::$(hostname)-$(date +%Y-%m-%d)"  # Creates a unique archive name with date
+
+# Exclude specific directories (optional)
+EXCLUDE_DIRS="/home/*/.cache /home/*/.ccache"
+
+# Run BorgBackup with options
+borg create -v --stats --exclude $EXCLUDE_DIRS $BACKUP_DEST $BACKUP_SOURCE
+
+# Optional: Prune old backups (explained later)
+# borg prune --keep-daily=7 --keep-weekly=4 --keep-monthly=6  >> /var/log/backup.log 2>&1
+Utilisez ce code avec précaution.
+content_copy
+Save the script as backup.sh (or any preferred name) in a suitable location (e.g., /home/user/backup_scripts).
+
+Make the script executable:
+
+Bash
+chmod +x backup.sh
+Utilisez ce code avec précaution.
+content_copy
+4. Scheduling Backups:
+
+Use cron to schedule automatic backups. Edit the crontab:
+
+Bash
+crontab -e
+Utilisez ce code avec précaution.
+content_copy
+Add a line like this to run the script daily at midnight:
+
+0 0 * * * /home/user/backup_scripts/backup.sh  >> /var/log/backup.log 2>&1
+Adjust the schedule (e.g., hourly, weekly) and path to your script as needed.
+5. Manual Restores:
+
+List available backups:
+
+Bash
+borg list ssh://username@server_address:/path/to/repository
+Utilisez ce code avec précaution.
+content_copy
+This will display a list of archive names with timestamps.
+
+To restore a specific backup (e.g., your-hostname-2024-05-20):
+
+Bash
+borg extract ssh://username@server_address:/path/to/repository::your-hostname-2024-05-20 /destination/folder
+Utilisez ce code avec précaution.
+content_copy
+Replace /destination/folder with the location where you want to restore the files.
+6. Optional: Prune Old Backups:
+
+BorgBackup allows keeping a specific number of backups for different durations (daily, weekly, monthly). Uncomment the borg prune line in your script and adjust the options (--keep-daily=7, etc.) to define your retention policy.
+Remember:
+
+Replace placeholders like usernames, server addresses, and paths with your specific details.
+Securely store your BorgBackup passphrase.
+Test your backups regularly to ensure they are functional.
+By following these steps, you'll have a robust backup system with BorgBackup on your Ubuntu server, allowing for automatic backups and easy manual restores when needed.
